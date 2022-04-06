@@ -114,7 +114,7 @@ Teams.ChildRemoved:Connect(function(team)
     teamsData:Set(newTeamsData)
 end)
 ContextActionService:BindActionAtPriority("TogglePlayerList", function(_, state)
-    if state == Enum.UserInputState.End then
+    if state == Enum.UserInputState.Begin then
         UIVisible:set(not UIVisible:get())
     end
 end, false, 4000, Enum.KeyCode.Tab)
