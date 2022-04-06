@@ -69,6 +69,19 @@ return function(props)
                         Position = UDim2.fromOffset(16, 0),
                         Size = UDim2.fromScale(0, 1),
                     },
+
+                    New "TextLabel" {
+                        Font = Enum.Font.Gotham,
+                        Text = props.Count,
+                        TextColor3 = Color3.fromHex("#FFFFFF"),
+                        TextTransparency = 0.5,
+                        TextSize = 14,
+                        TextXAlignment = Enum.TextXAlignment.Right,
+                        BackgroundTransparency = 1,
+                        AnchorPoint = Vector2.new(1, 0),
+                        Position = UDim2.new(1, -16, 0, 0),
+                        Size = UDim2.fromScale(0, 1),
+                    },
     
                     New "Frame" {
                         AnchorPoint = Vector2.new(0, 1),
