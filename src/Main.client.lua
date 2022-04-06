@@ -64,7 +64,7 @@ local UI = New "ScreenGui" {
                                     Name = player.Name,
                                     DisplayName = player.DisplayName,
                                     Order = Value(index + 1),
-                                    AtTop = Value(index == 1),
+                                    AtTop = Value(true),
                                     AtBottom = Value(index == #value.Players:get()),
                                     Visible = Computed(function()
                                         return not value.Collapsed:get()
