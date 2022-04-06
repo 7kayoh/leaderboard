@@ -71,31 +71,28 @@ local UI = New "ScreenGui" {
 
 local function registerTeam(team: Team)
     if not team:IsA("Team") then return false end
-    local data = {
-        Color = team.TeamColor.Color,
-        Name = team.Name,
-        Players = team:GetPlayers(),
-    }
     local function update()
-        local newTeamsData = teamsData:get()
-        newTeamsData[team.Name] = newTeamsData[team.Name] or {}
-        newTeamsData[team.Name].Players = data.Players
-        newTeamsData[team.Name].Color = data.Color
-        newTeamsData[team.Name].Name = data.Name
-        newTeamsData[team.Name].Collapsed = newTeamsData[team.Name].Collapsed or Value(false)
-        if #data.Players == 0 then
-            newTeamsData[team.Name].Collapsed:set(true)
+        local currentTeamsData = teamsData:get()
+        currentTeamsData[team.Name] = currentTeamsData[team.Name] or {
+            Players = Value({}),
+            Name = team.Name,
+        Color = team.TeamColor.Color,
+            Collapsed = Value(false),
+            CollapsedDueToNoPlayers = Value(true)
+    }
+        currentTeamsData[team.Name].Players:set(team:GetPlayers())
+		if #currentTeamsData[team.Name].Players:get() == 0 then
+            currentTeamsData[team.Name].Collapsed:set(true)
+            currentTeamsData[team.Name].CollapsedDueToNoPlayers:set(true)
+        elseif currentTeamsData[team.Name].CollapsedDueToNoPlayers:get() then
+            currentTeamsData[team.Name].Collapsed:set(false)
+            currentTeamsData[team.Name].CollapsedDueToNoPlayers:set(false)
         end
-        teamsData:set(newTeamsData)
+        teamsData:set(currentTeamsData)
     end
-    team.PlayerAdded:Connect(function(player)
-        table.insert(data.Players, player)
-        update()
-    end)
-    team.PlayerRemoved:Connect(function(player)
-        table.remove(data.Players, table.find(data.Players, player))
-        update()
-    end)
+
+    team.PlayerAdded:Connect(update)
+	team.PlayerRemoved:Connect(update)
     update()
 end
 
