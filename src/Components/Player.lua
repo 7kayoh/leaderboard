@@ -10,15 +10,22 @@ local OnEvent = Fusion.OnEvent
 
 return function(props)
     local isHovering = Value(false)
-    local initialValue = props.Visible:get()
-    props.Visible:set(false)
-    props.Visible:set(initialValue)
+    local forceDisabled = Value(true)
+
+    -- im so sorry for this horrible code solution
+    task.delay(0.1, function()
+        forceDisabled:set(false)
+    end)
 
     return New "Frame" {
         BackgroundTransparency = 1,
         LayoutOrder = props.Order:get(),
         Size = Tween(Computed(function()
-            return props.Visible:get() and UDim2.new(1, 0, 0, 42) or UDim2.fromScale(1, 0)
+            if forceDisabled:get() or not props.Visible:get() then
+                return UDim2.fromScale(1, 0)
+            else
+                return UDim2.new(1, 0, 0, 42)
+            end
         end), TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out, 0, false, 0.15)),
         ClipsDescendants = true,
 
@@ -27,9 +34,6 @@ return function(props)
                 BackgroundTransparency = 1,
                 TextTransparency = 1,
                 Text = "",
-                Position = Tween(Computed(function()
-                    return props.Visible:get() and UDim2.fromScale(0, 0) or UDim2.fromScale(1, 0)
-                end), TweenInfo.new(0.15, Enum.EasingStyle.Quint, Enum.EasingDirection.Out, 0, false, 0.05 * props.Order:get())),
                 Size = UDim2.fromScale(1, 1),
 
                 [Children] = {
