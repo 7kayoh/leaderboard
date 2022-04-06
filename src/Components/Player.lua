@@ -93,7 +93,7 @@ return function(props)
                             return isHovering:get() and 1 or 0.5
                         end), TweenInfo.new(0.15)),
                         Position = Fusion.Tween(Computed(function()
-                            return isHovering:get() and UDim2.fromScale(1, 0) or UDim2.fromOffset(16, 0)
+                            return isHovering:get() and UDim2.fromScale(0, 0) or UDim2.fromOffset(16, 0)
                         end), TweenInfo.new(0.15, Enum.EasingStyle.Quint)),
                         Size = UDim2.fromScale(0, 1),
                         Visible = Computed(function()
