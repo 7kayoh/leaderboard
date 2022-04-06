@@ -1,6 +1,8 @@
 local Players = game:GetService("Players")
+local StarterGui = game:GetService("StarterGui")
 local Teams = game:GetService("Teams")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local ContextActionService = game:GetService("ContextActionService")
 
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
 local Player = Players.LocalPlayer
@@ -10,11 +12,13 @@ local Children = Fusion.Children
 local Value = Fusion.Value
 local ForPairs = Fusion.ForPairs
 local Computed = Fusion.Computed
+local Tween = Fusion.Tween
 
 local PlayerComponent = require(script.Parent.Components.Player)
 local TeamHeaderComponent = require(script.Parent.Components.TeamHeader)
 
 local UISize = Value(UDim2.fromOffset(165, 300))
+local UIVisible = Value(true)
 local teamsData = Value({})
 local UI = New "ScreenGui" {
     ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
@@ -26,7 +30,9 @@ local UI = New "ScreenGui" {
             ScrollBarThickness = 0,
             AnchorPoint = Vector2.new(1, 0),
             BackgroundTransparency = 1,
-            Position = UDim2.new(1, -5, 0, 4),
+            Position = Tween(Computed(function()
+                return UIVisible:get() and UDim2.new(1, -5, 0, 4) or UDim2.new(1.145, -5, 0, 4)
+            end), TweenInfo.new(0.3, Enum.EasingStyle.Quint)),
             Size = UISize,
         
             [Children] = {
@@ -49,13 +55,17 @@ local UI = New "ScreenGui" {
                                 Color = value.Color,
                                 Name = value.Name,
                                 Collapsed = value.Collapsed,
+                                Count = Computed(function()
+                                    return #value.Players:get()
+                                end)
                             }),
                             ForPairs(value.Players, function(index, player)
                                 return index, PlayerComponent({
                                     Name = player.Name,
                                     DisplayName = player.DisplayName,
+                                    Order = Value(index + 1),
                                     AtTop = Value(index == 1),
-                                    AtBottom = Value(index == #value.Players),
+                                    AtBottom = Value(index == #value.Players:get()),
                                     Visible = Computed(function()
                                         return not value.Collapsed:get()
                                     end),
@@ -76,10 +86,10 @@ local function registerTeam(team: Team)
         currentTeamsData[team.Name] = currentTeamsData[team.Name] or {
             Players = Value({}),
             Name = team.Name,
-        Color = team.TeamColor.Color,
+            Color = team.TeamColor.Color,
             Collapsed = Value(false),
             CollapsedDueToNoPlayers = Value(true)
-    }
+        }
         currentTeamsData[team.Name].Players:set(team:GetPlayers())
 		if #currentTeamsData[team.Name].Players:get() == 0 then
             currentTeamsData[team.Name].Collapsed:set(true)
@@ -103,6 +113,11 @@ Teams.ChildRemoved:Connect(function(team)
     newTeamsData[team.Name] = nil
     teamsData:Set(newTeamsData)
 end)
+ContextActionService:BindActionAtPriority("TogglePlayerList", function(_, state)
+    if state == Enum.UserInputState.End then
+        UIVisible:set(not UIVisible:get())
+    end
+end, false, 4000, Enum.KeyCode.Tab)
 
 for _, team in ipairs(Teams:GetTeams()) do
     registerTeam(team)
