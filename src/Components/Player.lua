@@ -17,7 +17,7 @@ return function(props)
         Size = Tween(Computed(function()
             return props.Visible:get() and UDim2.new(1, 0, 0, 42) or UDim2.fromScale(1, 0)
         end), TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out, 0, false, 0.15)),
-        ClipDescendants = true,
+        ClipsDescendants = true,
 
         [Children] = {
             New "TextButton" {
