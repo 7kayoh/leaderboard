@@ -13,7 +13,7 @@ return function(props)
 
     return New "Frame" {
         BackgroundTransparency = 1,
-        LayoutOrder = 1,
+        LayoutOrder = props.Order:get(),
         Size = Tween(Computed(function()
             return props.Visible:get() and UDim2.new(1, 0, 0, 42) or UDim2.fromScale(1, 0)
         end), TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out, 0, false, 0.15)),
@@ -26,7 +26,7 @@ return function(props)
                 Text = "",
                 Position = Tween(Computed(function()
                     return props.Visible:get() and UDim2.fromScale(0, 0) or UDim2.fromScale(1, 0)
-                end), TweenInfo.new(0.15, Enum.EasingStyle.Quint)),
+                end), TweenInfo.new(0.15, Enum.EasingStyle.Quint, Enum.EasingDirection.Out, 0, false, 0.05 * props.Order:get())),
                 Size = UDim2.fromScale(1, 1),
 
                 [Children] = {
