@@ -10,6 +10,9 @@ local OnEvent = Fusion.OnEvent
 
 return function(props)
     local isHovering = Value(false)
+    local initialValue = props.Visible:get()
+    props.Visible:set(false)
+    props.Visible:set(initialValue)
 
     return New "Frame" {
         BackgroundTransparency = 1,
