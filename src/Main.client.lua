@@ -28,11 +28,11 @@ local UI = New "ScreenGui" {
         New "ScrollingFrame" {
             AutomaticCanvasSize = Enum.AutomaticSize.Y,
             ScrollBarThickness = 0,
-            AnchorPoint = Vector2.new(1, 0),
-            BackgroundTransparency = 1,
-            Position = Tween(Computed(function()
-                return UIVisible:get() and UDim2.new(1, -5, 0, 4) or UDim2.new(1.145, -5, 0, 4)
+            AnchorPoint = Tween(Computed(function()
+                return UIVisible:get() and Vector2.new(1, 0) or Vector2.new(0, 0)
             end), TweenInfo.new(0.3, Enum.EasingStyle.Quint)),
+            BackgroundTransparency = 1,
+            Position = UDim2.new(1, -5, 0, 4),
             Size = UISize,
         
             [Children] = {
