@@ -107,7 +107,7 @@ end)
 for _, team in ipairs(Teams:GetTeams()) do
     registerTeam(team)
 end
-
+StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
 if UI.AbsoluteSize.Y > 500 then
     UISize:set(UDim2.fromOffset(165, 300))
 else
