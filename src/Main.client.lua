@@ -71,9 +71,13 @@ local UI = New "ScreenGui" {
 								return index, PlayerComponent({
 									Name = player.Name,
 									DisplayName = player.DisplayName,
-									Order = Value(index + 1),
+									Order = Computed(function()
+										return table.find(value.Players:get(), player)	
+									end),
 									AtTop = Value(true),
-									AtBottom = Value(index == #value.Players:get()),
+									AtBottom = Computed(function()
+										return table.find(value.Players:get(), player) == #value.Players:get()
+									end),
 									Visible = Computed(function()
 										return not value.Collapsed:get()
 									end),
@@ -89,6 +93,7 @@ local UI = New "ScreenGui" {
 
 local function registerTeam(team: Team)
 	if not team:IsA("Team") then return false end
+	if team:GetAttribute("REDACTED") then return false end
 	local function update()
 		local currentTeamsData = teamsData:get()
 		currentTeamsData[team.Name] = currentTeamsData[team.Name] or {
