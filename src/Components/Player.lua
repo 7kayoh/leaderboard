@@ -104,7 +104,7 @@ return function(props)
                         TextXAlignment = Enum.TextXAlignment.Left,
                         BackgroundTransparency = 1,
                         TextTransparency = Fusion.Tween(Computed(function()
-                            return isHovering:get() and 1 or 0.5
+                            return isHovering:get() and 1 or 0
                         end), TweenInfo.new(0.15)),
                         Position = Fusion.Tween(Computed(function()
                             return isHovering:get() and UDim2.fromScale(0, 0) or UDim2.fromOffset(16, 0)
