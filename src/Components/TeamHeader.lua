@@ -97,7 +97,6 @@ return function(props)
                 },
 
                 [OnEvent "Activated"] = function()
-                    print(props.Collapsed:get())
                     props.Collapsed:set(not props.Collapsed:get())
                 end,
             },
