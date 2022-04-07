@@ -140,6 +140,7 @@ return function(props)
                         end), TweenInfo.new(0.2, Enum.EasingStyle.Back)),
                         Size = UDim2.fromScale(0, 1),
                     },
+
                     New "ImageLabel" {
                         BackgroundTransparency = 1,
                         Image = props.Icon,
