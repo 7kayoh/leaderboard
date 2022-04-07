@@ -26,7 +26,7 @@ return function(props)
             else
                 return UDim2.new(1, 0, 0, 42)
             end
-        end), TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out, 0, false, 0.15)),
+        end), TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out, 0, false, 0.3)),
         ClipsDescendants = true,
 
         [Children] = {
@@ -40,7 +40,7 @@ return function(props)
                     else
                         return UDim2.fromScale(0, 0)
                     end
-                end), TweenInfo.new(0.15, Enum.EasingStyle.Quint, Enum.EasingDirection.Out, 0, false, 0.05)),
+                end), TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out, 0, false)),
                 Size = UDim2.fromScale(1, 1),
 
                 [Children] = {
