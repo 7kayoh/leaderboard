@@ -34,6 +34,13 @@ return function(props)
                 BackgroundTransparency = 1,
                 TextTransparency = 1,
                 Text = "",
+                Position = Tween(Computed(function()
+                    if forceDisabled:get() or not props.Visible:get() then
+                        return UDim2.fromScale(1, 0)
+                    else
+                        return UDim2.fromScale(0, 0)
+                    end
+                end), TweenInfo.new(0.15, Enum.EasingStyle.Quint, Enum.EasingDirection.Out, 0, false, 0.05)),
                 Size = UDim2.fromScale(1, 1),
 
                 [Children] = {
