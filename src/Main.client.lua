@@ -5,6 +5,8 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ContextActionService = game:GetService("ContextActionService")
 
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
+local PlayerComponent = require(script.Parent.Components.Player)
+local TeamHeaderComponent = require(script.Parent.Components.TeamHeader)
 local Player = Players.LocalPlayer
 
 local New = Fusion.New
@@ -14,9 +16,6 @@ local ForPairs = Fusion.ForPairs
 local Computed = Fusion.Computed
 local Tween = Fusion.Tween
 local Out = Fusion.Out
-
-local PlayerComponent = require(script.Parent.Components.Player)
-local TeamHeaderComponent = require(script.Parent.Components.TeamHeader)
 
 local UISize = Value(UDim2.fromOffset(200, 300))
 local UIVisible = Value(true)
@@ -75,6 +74,16 @@ local UI = New "ScreenGui" {
 								return index, PlayerComponent({
 									Name = player.Name,
 									DisplayName = player.DisplayName,
+									Icon = Computed(function()
+										local success, result = pcall(player.IsFriendsWith, player, Player)
+										if success and result then
+											return "rbxasset://textures/ui/PlayerList/FriendIcon@3x.png"
+										elseif player.MembershipType == Enum.MembershipType.Premium then
+											return "rbxasset://textures/ui/PlayerList/PremiumIcon@3x.png"
+										else
+											return "rbxasset://"
+										end
+									end),
 									Order = Computed(function()
 										return table.find(value.Players:get(), player)	
 									end),
