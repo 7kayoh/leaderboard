@@ -97,7 +97,6 @@ local UI = New "ScreenGui" {
 
 local function registerTeam(team: Team)
 	if not team:IsA("Team") then return false end
-	if team:GetAttribute("REDACTED") then return false end
 	local function update()
 		local currentTeamsData = teamsData:get()
 		currentTeamsData[team.Name] = currentTeamsData[team.Name] or {
