@@ -13,11 +13,12 @@ local Value = Fusion.Value
 local ForPairs = Fusion.ForPairs
 local Computed = Fusion.Computed
 local Tween = Fusion.Tween
+local Ref = Fusion.Ref
 
 local PlayerComponent = require(script.Parent.Components.Player)
 local TeamHeaderComponent = require(script.Parent.Components.TeamHeader)
 
-local UISize = Value(UDim2.fromOffset(165, 300))
+local UISize = Value(UDim2.fromOffset(200, 300))
 local UIVisible = Value(true)
 local teamsData = Value({})
 local UI = New "ScreenGui" {
@@ -42,14 +43,18 @@ local UI = New "ScreenGui" {
                 },
 
                 ForPairs(teamsData, function(index, value)
+                    local absoluteContentSize = Value(Vector2.new(0, 0))
+
                     return index, New "Frame" {
-                        AutomaticSize = Enum.AutomaticSize.Y,
                         BackgroundTransparency = 1,
-                        Size = UDim2.fromScale(1, 0),
+                        Size = Computed(function()
+                            return UDim2.new(1, 0, 0, absoluteContentSize:get().Y)
+                        end),
                 
                         [Children] = {
                             New "UIListLayout" {
                                 SortOrder = Enum.SortOrder.LayoutOrder,
+                                [Ref "AbsoluteContentSize"] = absoluteContentSize,
                             },
                             TeamHeaderComponent({
                                 Color = value.Color,
@@ -124,7 +129,7 @@ for _, team in ipairs(Teams:GetTeams()) do
 end
 StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
 if UI.AbsoluteSize.Y > 500 then
-    UISize:set(UDim2.fromOffset(165, 300))
+    UISize:set(UDim2.fromOffset(200, 300))
 else
-    UISize:set(UDim2.new(0, 165, 0.4, 0))
+    UISize:set(UDim2.new(0, 180, 0.4, 0))
 end
