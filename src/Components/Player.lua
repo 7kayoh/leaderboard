@@ -108,11 +108,8 @@ return function(props)
                         end), TweenInfo.new(0.15)),
                         Position = Fusion.Tween(Computed(function()
                             return isHovering:get() and UDim2.fromScale(0, 0) or UDim2.fromOffset(16, 0)
-                        end), TweenInfo.new(0.15, Enum.EasingStyle.Back)),
+                        end), TweenInfo.new(0.2, Enum.EasingStyle.Back)),
                         Size = UDim2.fromScale(0, 1),
-                        Visible = Computed(function()
-                            return not isHovering:get()
-                        end),
                     },
 
                     New "Frame" {
@@ -136,14 +133,12 @@ return function(props)
                         TextTransparency = Fusion.Tween(Computed(function()
                             return isHovering:get() and 0.5 or 1
                         end), TweenInfo.new(0.15)),
-                        TextXAlignment = Enum.TextXAlignment.Right,
-                        AnchorPoint = Vector2.new(1, 0),
+                        TextXAlignment = Enum.TextXAlignment.Left,
                         BackgroundTransparency = 1,
                         Position = Fusion.Tween(Computed(function()
-                            return isHovering:get() and UDim2.new(1, -16, 0, 0) or UDim2.fromScale(1, 0)
-                        end), TweenInfo.new(0.15, Enum.EasingStyle.Back)),
+                            return isHovering:get() and UDim2.fromOffset(16, 0) or UDim2.fromOffset(32, 0)
+                        end), TweenInfo.new(0.2, Enum.EasingStyle.Back)),
                         Size = UDim2.fromScale(0, 1),
-                        Visible = isHovering,
                     },
                     New "ImageLabel" {
                         BackgroundTransparency = 1,
