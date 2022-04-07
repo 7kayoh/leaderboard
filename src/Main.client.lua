@@ -50,7 +50,7 @@ New "ScreenGui" {
 					[Out "AbsoluteContentSize"] = canvasSize,
 				},
 
-				ForValues(allTeams, function(_, team)
+				ForValues(allTeams, function(team)
 					if #team.Players >= 1 then
 						return List(team)
 					else
