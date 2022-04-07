@@ -20,6 +20,7 @@ local TeamHeaderComponent = require(script.Parent.Components.TeamHeader)
 
 local UISize = Value(UDim2.fromOffset(200, 300))
 local UIVisible = Value(true)
+local UICanvasSize = Value(Vector2.new(0, 0))
 local teamsData = Value({})
 local UI = New "ScreenGui" {
 	ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
@@ -27,12 +28,14 @@ local UI = New "ScreenGui" {
 
 	[Children] = {
 		New "ScrollingFrame" {
-			AutomaticCanvasSize = Enum.AutomaticSize.Y,
 			ScrollBarThickness = 0,
 			AnchorPoint = Tween(Computed(function()
 				return UIVisible:get() and Vector2.new(1, 0) or Vector2.new(0, 0)
 			end), TweenInfo.new(0.3, Enum.EasingStyle.Quint)),
 			BackgroundTransparency = 1,
+			CanvasSize = Tween(Computed(function()
+				return UDim2.fromOffset(0, UICanvasSize:get().Y)
+			end), TweenInfo.new(0.3, Enum.EasingStyle.Quint)),
 			Position = UDim2.new(1, -5, 0, 4),
 			Size = UISize,
 
@@ -40,6 +43,7 @@ local UI = New "ScreenGui" {
 				New "UIListLayout" {
 					Padding = UDim.new(0, 6),
 					SortOrder = Enum.SortOrder.LayoutOrder,
+					[Out "AbsoluteContentSize"] = UICanvasSize,
 				},
 
 				ForPairs(teamsData, function(index, value)
