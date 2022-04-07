@@ -110,6 +110,7 @@ return function(props)
                             return isHovering:get() and UDim2.fromScale(0, 0) or UDim2.fromOffset(16, 0)
                         end), TweenInfo.new(0.2, Enum.EasingStyle.Back)),
                         Size = UDim2.fromScale(0, 1),
+                        ZIndex = 2,
                     },
 
                     New "Frame" {
@@ -139,6 +140,7 @@ return function(props)
                             return isHovering:get() and UDim2.fromOffset(16, 0) or UDim2.fromOffset(32, 0)
                         end), TweenInfo.new(0.2, Enum.EasingStyle.Back)),
                         Size = UDim2.fromScale(0, 1),
+                        ZIndex = 2,
                     },
 
                     New "ImageLabel" {
@@ -147,6 +149,7 @@ return function(props)
                         AnchorPoint = Vector2.new(1, 0.5),
                         Size = UDim2.fromOffset(16, 16),
                         Position = UDim2.new(1, -13, 0.5, 0),
+                        ZIndex = 2,
                     }
                 },
 

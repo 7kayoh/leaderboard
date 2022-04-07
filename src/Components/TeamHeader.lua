@@ -69,6 +69,7 @@ return function(props)
                         Position = UDim2.fromOffset(16, 0),
                         Size = UDim2.fromScale(0.8, 1),
                         TextWrapped = true,
+                        ZIndex = 2,
                     },
 
                     New "TextLabel" {
@@ -82,6 +83,7 @@ return function(props)
                         AnchorPoint = Vector2.new(1, 0),
                         Position = UDim2.new(1, -16, 0, 0),
                         Size = UDim2.fromScale(0, 1),
+                        ZIndex = 2,
                     },
     
                     New "Frame" {
@@ -93,7 +95,8 @@ return function(props)
                         Size = UDim2.new(1, 0, 0, 2),
                         Visible = Computed(function()
                             return not props.Collapsed:get()
-                        end)
+                        end),
+                        ZIndex = 2,
                     },
                 },
 
