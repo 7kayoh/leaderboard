@@ -12,7 +12,7 @@ local Player = Players.LocalPlayer
 local New = Fusion.New
 local Children = Fusion.Children
 local Value = Fusion.Value
-local ForPairs = Fusion.ForPairs
+local ForValues = Fusion.ForValues
 local Computed = Fusion.Computed
 local Tween = Fusion.Tween
 local Out = Fusion.Out
@@ -24,6 +24,7 @@ local teamsData = Value({})
 local UI = New "ScreenGui" {
 	ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
 	Parent = Player:WaitForChild("PlayerGui"),
+	Name = "Player List",
 
 	[Children] = {
 		New "ScrollingFrame" {
@@ -45,16 +46,16 @@ local UI = New "ScreenGui" {
 					[Out "AbsoluteContentSize"] = UICanvasSize,
 				},
 
-				ForPairs(teamsData, function(index, value)
+				ForValues(teamsData, function(value)
 					local absoluteContentSize = Value(Vector2.new(0, 0))
 
-					return index, New "Frame" {
+					return New "Frame" {
 						BackgroundTransparency = 1,
 						Size = Computed(function()
 							return UDim2.new(1, 0, 0, absoluteContentSize:get().Y)
 						end),
 						Visible = Computed(function()
-							return #value.Players > 0 
+							return #value.Players:get() > 0
 						end),
 
 						[Children] = {
@@ -67,11 +68,12 @@ local UI = New "ScreenGui" {
 								Name = value.Name,
 								Collapsed = value.Collapsed,
 								Count = Computed(function()
-									return #value.Players
+									return #value.Players:get() or "0"
 								end)
 							}),
-							ForPairs(value.Players, function(index, player)
-								return index, PlayerComponent({
+							ForValues(value.Players, function(player)
+								local index = table.find(value.Players:get(), player)
+								return PlayerComponent({
 									Name = player.Name,
 									DisplayName = player.DisplayName,
 									Icon = Computed(function()
@@ -85,11 +87,11 @@ local UI = New "ScreenGui" {
 										end
 									end),
 									Order = Computed(function()
-										return table.find(value.Players, player)	
+										return index
 									end),
 									AtTop = Value(true),
 									AtBottom = Computed(function()
-										return table.find(value.Players, player) == #value.Players
+										return index == #value.Players:get()
 									end),
 									Visible = Computed(function()
 										return not value.Collapsed:get()
@@ -109,14 +111,15 @@ local function registerTeam(team: Team)
 	local function update()
 		local currentTeamsData = teamsData:get()
 		currentTeamsData[team.Name] = currentTeamsData[team.Name] or {
-			Players = {},
+			Players = Value({}),
 			Name = team.Name,
 			Color = team.TeamColor.Color,
 			Collapsed = Value(false),
 			CollapsedDueToNoPlayers = Value(true)
 		}
-		currentTeamsData[team.Name].Players = team:GetPlayers()
-		if #currentTeamsData[team.Name].Players == 0 then
+		
+		currentTeamsData[team.Name].Players:set(team:GetPlayers())
+		if #currentTeamsData[team.Name].Players:get() == 0 then
 			currentTeamsData[team.Name].Collapsed:set(true)
 			currentTeamsData[team.Name].CollapsedDueToNoPlayers:set(true)
 		elseif currentTeamsData[team.Name].CollapsedDueToNoPlayers:get() then
