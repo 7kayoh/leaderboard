@@ -145,6 +145,13 @@ return function(props)
                         Size = UDim2.fromScale(0, 1),
                         Visible = isHovering,
                     },
+                    New "ImageLabel" {
+                        BackgroundTransparency = 1,
+                        Image = props.Icon,
+                        AnchorPoint = Vector2.new(1, 0.5),
+                        Size = UDim2.fromOffset(16, 16),
+                        Position = UDim2.new(1, -13, 0.5, 0),
+                    }
                 },
 
                 [OnEvent "MouseEnter"] = function()
