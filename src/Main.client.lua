@@ -54,7 +54,7 @@ local UI = New "ScreenGui" {
 							return UDim2.new(1, 0, 0, absoluteContentSize:get().Y)
 						end),
 						Visible = Computed(function()
-							return #value.Players:get() > 0 
+							return #value.Players > 0 
 						end),
 
 						[Children] = {
@@ -67,7 +67,7 @@ local UI = New "ScreenGui" {
 								Name = value.Name,
 								Collapsed = value.Collapsed,
 								Count = Computed(function()
-									return #value.Players:get()
+									return #value.Players
 								end)
 							}),
 							ForPairs(value.Players, function(index, player)
@@ -85,11 +85,11 @@ local UI = New "ScreenGui" {
 										end
 									end),
 									Order = Computed(function()
-										return table.find(value.Players:get(), player)	
+										return table.find(value.Players, player)	
 									end),
 									AtTop = Value(true),
 									AtBottom = Computed(function()
-										return table.find(value.Players:get(), player) == #value.Players:get()
+										return table.find(value.Players, player) == #value.Players
 									end),
 									Visible = Computed(function()
 										return not value.Collapsed:get()
@@ -109,14 +109,14 @@ local function registerTeam(team: Team)
 	local function update()
 		local currentTeamsData = teamsData:get()
 		currentTeamsData[team.Name] = currentTeamsData[team.Name] or {
-			Players = Value({}),
+			Players = {},
 			Name = team.Name,
 			Color = team.TeamColor.Color,
 			Collapsed = Value(false),
 			CollapsedDueToNoPlayers = Value(true)
 		}
-		currentTeamsData[team.Name].Players:set(team:GetPlayers())
-		if #currentTeamsData[team.Name].Players:get() == 0 then
+		currentTeamsData[team.Name].Players = team:GetPlayers()
+		if #currentTeamsData[team.Name].Players == 0 then
 			currentTeamsData[team.Name].Collapsed:set(true)
 			currentTeamsData[team.Name].CollapsedDueToNoPlayers:set(true)
 		elseif currentTeamsData[team.Name].CollapsedDueToNoPlayers:get() then
