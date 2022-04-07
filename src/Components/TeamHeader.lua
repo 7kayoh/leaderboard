@@ -67,7 +67,8 @@ return function(props)
                         TextXAlignment = Enum.TextXAlignment.Left,
                         BackgroundTransparency = 1,
                         Position = UDim2.fromOffset(16, 0),
-                        Size = UDim2.fromScale(0, 1),
+                        Size = UDim2.fromScale(0.8, 1),
+                        TextWrapped = true,
                     },
 
                     New "TextLabel" {
