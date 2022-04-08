@@ -1,29 +1,14 @@
 --!strict
 
 --[[
-	A special key for property tables, which stores a reference to the instance
-	in a user-provided Value object.
+	The symbol used to denote the reference of an instance when working with the
+	`New` function.
 ]]
 
 local Package = script.Parent.Parent
 local PubTypes = require(Package.PubTypes)
-local logError = require(Package.Logging.logError)
-local xtypeof = require(Package.Utility.xtypeof)
 
-local Ref = {}
-Ref.type = "SpecialKey"
-Ref.kind = "Ref"
-Ref.stage = "observer"
-
-function Ref:apply(refState: any, applyToRef: PubTypes.SemiWeakRef, cleanupTasks: {PubTypes.Task})
-	if xtypeof(refState) ~= "State" or refState.kind ~= "Value" then
-		logError("invalidRefType")
-	else
-		refState:set(applyToRef.instance)
-		table.insert(cleanupTasks, function()
-			refState:set(nil)
-		end)
-	end
-end
-
-return Ref
+return {
+	type = "Symbol",
+	name = "Ref"
+} :: PubTypes.RefKey

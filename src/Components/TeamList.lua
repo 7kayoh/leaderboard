@@ -12,7 +12,7 @@ local DEV_LOWEST_RANK = 255
 local New = Fusion.New
 local Children = Fusion.Children
 local Value = Fusion.Value
-local ForPairs = Fusion.ForPairs
+local ComputedPairs = Fusion.ComputedPairs
 local Computed = Fusion.Computed
 local OnChange = Fusion.OnChange
 
@@ -42,8 +42,8 @@ return function(props)
                 Collapsed = props.Collapsed,
                 Count = #props.Players,
             }),
-            ForPairs(props.Players, function(index, player)
-                return player.Name, PlayerComponent({
+            ComputedPairs(props.Players, function(index, player)
+                return PlayerComponent({
                     Name = player.Name,
                     DisplayName = player.DisplayName,
                     Icon = Computed(function()

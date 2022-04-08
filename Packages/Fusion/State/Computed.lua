@@ -11,7 +11,6 @@ local captureDependencies = require(Package.Dependencies.captureDependencies)
 local initDependency = require(Package.Dependencies.initDependency)
 local useDependency = require(Package.Dependencies.useDependency)
 local logErrorNonFatal = require(Package.Logging.logErrorNonFatal)
-local isSimilar = require(Package.Utility.isSimilar)
 
 local class = {}
 
@@ -58,7 +57,7 @@ function class:update(): boolean
 			dependency.dependentSet[self] = true
 		end
 
-		return not isSimilar(oldValue, newValue)
+		return oldValue ~= newValue
 	else
 		-- this needs to be non-fatal, because otherwise it'd disrupt the
 		-- update process

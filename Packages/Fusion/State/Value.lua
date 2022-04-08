@@ -10,7 +10,6 @@ local Types = require(Package.Types)
 local useDependency = require(Package.Dependencies.useDependency)
 local initDependency = require(Package.Dependencies.initDependency)
 local updateAll = require(Package.Dependencies.updateAll)
-local isSimilar = require(Package.Utility.isSimilar)
 
 local class = {}
 
@@ -37,14 +36,15 @@ end
 	unnecessary updates.
 ]]
 function class:set(newValue: any, force: boolean?)
-	local similar = isSimilar(self._value, newValue)
+	-- if the value hasn't changed, no need to perform extra work here
+	if self._value == newValue and not force then
+		return
+	end
+
 	self._value = newValue
 
-	-- if the value hasn't changed, no need to perform extra work here
-	if not similar or force then
-		-- update any derived state objects if necessary
-		updateAll(self)
-	end
+	-- update any derived state objects if necessary
+	updateAll(self)
 end
 
 local function Value<T>(initialValue: T): Types.State<T>

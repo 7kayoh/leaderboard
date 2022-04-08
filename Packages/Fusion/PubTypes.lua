@@ -16,7 +16,7 @@ export type Symbol = {
 	name: string
 }
 
--- Types that can be expressed as vectors of numbers, and so can be animated.
+-- PubTypes that can be expressed as vectors of numbers, and so can be animated.
 export type Animatable =
 	number |
 	CFrame |
@@ -36,15 +36,6 @@ export type Animatable =
 	Vector2int16 |
 	Vector3 |
 	Vector3int16
-
--- A task which can be accepted for cleanup.
-export type Task =
-	Instance |
-	RBXScriptConnection |
-	() -> () |
-	{destroy: (any) -> ()} |
-	{Destroy: (any) -> ()} |
-	{Task}
 
 -- Script-readable version information.
 export type Version = {
@@ -93,16 +84,8 @@ export type Computed<T> = StateObject<T> & Dependent & {
 }
 
 -- A state object whose value is derived from other objects using a callback.
-export type ForPairs<KO, VO> = StateObject<{ [KO]: VO }> & Dependent & {
-	-- kind: "ForPairs" (add this when Luau supports singleton types)
-}
--- A state object whose value is derived from other objects using a callback.
-export type ForKeys<KO, V> = StateObject<{ [KO]: V }> & Dependent & {
-	-- kind: "ForKeys" (add this when Luau supports singleton types)
-}
--- A state object whose value is derived from other objects using a callback.
-export type ForValues<K, VO> = StateObject<{ [K]: VO }> & Dependent & {
-	-- kind: "ForKeys" (add this when Luau supports singleton types)
+export type ComputedPairs<K, V> = StateObject<{[K]: V}> & Dependent & {
+	-- kind: "ComputedPairs" (add this when Luau supports singleton types)
 }
 
 -- A state object which follows another state object using tweens.
@@ -126,27 +109,49 @@ export type Observer = Dependent & {
 }
 
 --[[
-	Instance related types
+	Property table types
 ]]
 
--- A semi-weak instance reference.
-export type SemiWeakRef = {
-	type: string, -- replace with "SemiWeakRef" when Luau supports singleton types
-	instance: Instance?
+-- Denotes children instances in an instance or component's property table.
+export type ChildrenKey = Symbol & {
+	-- name: "Children" (add this when Luau supports singleton types)
 }
 
--- Denotes children instances in an instance or component's property table.
-export type SpecialKey = {
-	type: string, -- replace with "SpecialKey" when Luau supports singleton types
-	kind: string,
-	stage: string, -- replace with "self" | "descendants" | "ancestor" | "observer" when Luau supports singleton types
-	apply: (SpecialKey, value: any, applyTo: SemiWeakRef, cleanupTasks: {Task}) -> ()
+-- Denotes reference instances in an instance or component's property table.
+export type RefKey = Symbol & {
+	-- name: "Ref" (add this when Luau supports singleton types)
+}
+
+-- Denotes property change handlers in an instance's property table.
+export type OnChangeKey = Symbol & {
+	-- name: "OnChange" (add this when Luau supports singleton types)
+	key: string
+}
+
+-- Denotes event  handlers in an instance's property table.
+export type OnEventKey = Symbol & {
+	-- name: "OnEvent" (add this when Luau supports singleton types)
+	key: string
 }
 
 -- A collection of instances that may be parented to another instance.
 export type Children = Instance | StateObject<Children> | {[any]: Children}
 
 -- A table that defines an instance's properties, handlers and children.
-export type PropertyTable = {[string | SpecialKey]: any}
+-- FUTURE: Typed Luau is not advanced enough to express this type in full
+-- specificity yet, so we have to settle for some runtime type checking here.
+-- In psuedo-Luau, this definition should be akin to the following:
+-- export type PropertyTable<ClassName> = {
+--     [ClassName::Property]: CanBeState<Property::Value>
+--     [OnEventKey]: (any...) -> (),
+--     [OnChangeKey]: (any) -> (),
+--     [ChildrenKey]: Children
+--     [RefKey]: Value
+-- }
+export type PropertyTable = {
+	[string | OnEventKey | OnChangeKey | ChildrenKey | RefKey]: any
+}
+
+
 
 return nil

@@ -11,24 +11,20 @@ local Player = Players.LocalPlayer
 local New = Fusion.New
 local Children = Fusion.Children
 local Value = Fusion.Value
-local ForValues = Fusion.ForValues
+local ComputedPairs = Fusion.ComputedPairs
 local Computed = Fusion.Computed
 local Tween = Fusion.Tween
-local Out = Fusion.Out
-local Ref = Fusion.Ref
+local OnChange = Fusion.OnChange
 
 local size = Value(UDim2.fromOffset(200, 300))
 local isVisible = Value(true)
 local canvasSize = Value(Vector2.new(0, 0))
 local allTeams = Value({})
-local UI = Value()
 
-New "ScreenGui" {
+local UI = New "ScreenGui" {
 	ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
 	Parent = Player:WaitForChild("PlayerGui"),
 	Name = "Player List",
-
-	[Ref] = UI,
 
 	[Children] = {
 		New "ScrollingFrame" {
@@ -47,14 +43,16 @@ New "ScreenGui" {
 				New "UIListLayout" {
 					Padding = UDim.new(0, 6),
 					SortOrder = Enum.SortOrder.LayoutOrder,
-					[Out "AbsoluteContentSize"] = canvasSize,
+					[OnChange "AbsoluteContentSize"] = function(newValue)
+						canvasSize:set(newValue)
+					end
 				},
 
-				ForValues(allTeams, function(team)
+				ComputedPairs(allTeams, function(_, team)
 					if #team.Players >= 1 then
 						return List(team)
 					else
-						return {}
+						return nil
 					end
 				end),
 			}
@@ -103,7 +101,7 @@ ContextActionService:BindActionAtPriority("TogglePlayerList", function(_, state)
 	end
 end, false, 4000, Enum.KeyCode.Tab)
 
-if UI:get().AbsoluteSize.Y > 500 then
+if UI.AbsoluteSize.Y > 500 then
 	size:set(UDim2.fromOffset(200, 300))
 else
 	size:set(UDim2.new(0, 180, 0.4, 0))

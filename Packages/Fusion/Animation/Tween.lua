@@ -13,7 +13,6 @@ local useDependency = require(Package.Dependencies.useDependency)
 local initDependency = require(Package.Dependencies.initDependency)
 local logError = require(Package.Logging.logError)
 local logErrorNonFatal = require(Package.Logging.logErrorNonFatal)
-local xtypeof = require(Package.Utility.xtypeof)
 
 local class = {}
 
@@ -65,7 +64,7 @@ function class:update(): boolean
 	if tweenInfo.Reverses then
 		tweenDuration += tweenInfo.Time
 	end
-	tweenDuration *= tweenInfo.RepeatCount + 1
+	tweenDuration *= self._tweenInfo.RepeatCount + 1
 	self._currentTweenDuration = tweenDuration
 
 	-- start animating this tween
@@ -74,10 +73,10 @@ function class:update(): boolean
 	return false
 end
 
-local function Tween<T>(
+local function Tween(
 	goalState: PubTypes.StateObject<PubTypes.Animatable>,
 	tweenInfo: PubTypes.CanBeState<TweenInfo>?
-): Types.Tween<T>
+)
 	local currentValue = goalState:get(false)
 
 	-- apply defaults for tween info
@@ -86,20 +85,14 @@ local function Tween<T>(
 	end
 
 	local dependencySet = {[goalState] = true}
-	local tweenInfoIsState = xtypeof(tweenInfo) == "State"
+	local tweenInfoIsState = typeof(tweenInfo) == "table" and tweenInfo.type == "State"
 
 	if tweenInfoIsState then
 		dependencySet[tweenInfo] = true
 	end
 
-	local startingTweenInfo = tweenInfo
-	if tweenInfoIsState then
-		startingTweenInfo = startingTweenInfo:get()
-	end
-
-	-- If we start with a bad TweenInfo, then we don't want to construct a Tween
-	if typeof(startingTweenInfo) ~= "TweenInfo" then
-		logError("mistypedTweenInfo", nil, typeof(startingTweenInfo))
+	if typeof(tweenInfo) ~= "TweenInfo" then
+		logError("mistypedTweenInfo", nil, typeof(tweenInfo))
 	end
 
 	local self = setmetatable({
