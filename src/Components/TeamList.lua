@@ -6,6 +6,9 @@ local PlayerComponent = require(script.Parent.Player)
 local TeamHeaderComponent = require(script.Parent.TeamHeader)
 local Player = Players.LocalPlayer
 
+local DEV_GRP = 7
+local DEV_LOWEST_RANK = 255
+
 local New = Fusion.New
 local Children = Fusion.Children
 local Value = Fusion.Value
@@ -42,10 +45,15 @@ return function(props)
                     DisplayName = player.DisplayName,
                     Icon = Computed(function()
                         local success, result = pcall(player.IsFriendsWith, player, Player)
-                        if success and result then
-                            return "rbxasset://textures/ui/PlayerList/FriendIcon@3x.png"
+                        local success2, result2 = pcall(player.GetRankInGroup, player, DEV_GRP)
+                        if player == Players.LocalPlayer then
+                            return "rbxassetid://9308617156"
+                        elseif success and result then
+                            return "rbxasset://textures/ui/PlayerList/FriendIcon.png"
+                        elseif success2 and result2 >= DEV_LOWEST_RANK then
+                            return "rbxasset://textures/ui/PlayerList/developer.png"
                         elseif player.MembershipType == Enum.MembershipType.Premium then
-                            return "rbxasset://textures/ui/PlayerList/PremiumIcon@3x.png"
+                            return "rbxasset://textures/ui/PlayerList/PremiumIcon.png"
                         else
                             return "rbxasset://"
                         end
