@@ -11,7 +11,7 @@ return function(props)
     props.Collapsed = props.Collapsed or Value(false)
     return New "Frame" {
         BackgroundTransparency = 1,
-        Size = UDim2.new(1, 0, 0, 32),
+        Size = UDim2.new(1, 0, 0, 24),
     
         [Children] = {
             New "TextButton" {
@@ -63,11 +63,11 @@ return function(props)
                         Font = Enum.Font.GothamBold,
                         Text = props.Name,
                         TextColor3 = Color3.fromHex("#FFFFFF"),
-                        TextSize = 14,
+                        TextSize = 12,
                         TextXAlignment = Enum.TextXAlignment.Left,
                         BackgroundTransparency = 1,
                         Position = UDim2.fromOffset(16, 0),
-                        Size = UDim2.fromScale(0.8, 1),
+                        Size = UDim2.fromScale(0.75, 1),
                         TextWrapped = true,
                         ZIndex = 2,
                     },
@@ -77,7 +77,7 @@ return function(props)
                         Text = props.Count,
                         TextColor3 = Color3.fromHex("#FFFFFF"),
                         TextTransparency = 0.5,
-                        TextSize = 14,
+                        TextSize = 12,
                         TextXAlignment = Enum.TextXAlignment.Right,
                         BackgroundTransparency = 1,
                         AnchorPoint = Vector2.new(1, 0),
