@@ -11,7 +11,7 @@ local Player = Players.LocalPlayer
 local New = Fusion.New
 local Children = Fusion.Children
 local Value = Fusion.Value
-local ForPairs = Fusion.ForPairs
+local ForValues = Fusion.ForValues
 local Computed = Fusion.Computed
 local Tween = Fusion.Tween
 local Out = Fusion.Out
@@ -50,11 +50,11 @@ New "ScreenGui" {
 					[Out "AbsoluteContentSize"] = canvasSize,
 				},
 
-				ForPairs(allTeams, function(_, team)
+				ForValues(allTeams, function(team)
 					if #team.Players >= 1 then
-						return team.Name, List(team)
+						return List(team)
 					else
-						return team.Name, nil
+						return {}
 					end
 				end),
 			}
