@@ -14,7 +14,7 @@ local Children = Fusion.Children
 local Value = Fusion.Value
 local ForPairs = Fusion.ForPairs
 local Computed = Fusion.Computed
-local Out = Fusion.Out
+local OnChange = Fusion.OnChange
 
 return function(props)
     local absoluteContentSize = Value(Vector2.new(0, 0))
@@ -31,7 +31,10 @@ return function(props)
         [Children] = {
             New "UIListLayout" {
                 SortOrder = Enum.SortOrder.LayoutOrder,
-                [Out "AbsoluteContentSize"] = absoluteContentSize,
+
+                [OnChange "AbsoluteContentSize"] = function(newValue)
+                    absoluteContentSize:set(newValue)
+                end
             },
             TeamHeaderComponent({
                 Color = props.Color,
