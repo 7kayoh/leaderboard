@@ -22,7 +22,7 @@ return function(props)
     return New "Frame" {
         BackgroundTransparency = 1,
         Size = Computed(function()
-            return UDim2.new(1, 0, 0, absoluteContentSize.Y)
+            return UDim2.new(1, 0, 0, absoluteContentSize:get().Y)
         end),
         Visible = Computed(function()
             return #props.Players > 0
