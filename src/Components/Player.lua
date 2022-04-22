@@ -95,11 +95,11 @@ return function(props)
                     },
 
                     New "ImageLabel" {
-                        Size = UDim2.fromOffset(42, 42),
-                        Position = UDim2.fromOffset(16, 0),
+                        Size = UDim2.fromOffset(60, 42),
+                        Position = UDim2.fromOffset(0, 0),
                         BackgroundTransparency = 1,
-                        Image = ("rbxthumb://type=AvatarHeadShot&id=%s&w=48&h=48"):format(props.UserId),
-                        ImageTransparency = 0.5,
+                        Image = ("rbxthumb://type=AvatarHeadShot&id=%s&w=60&h=60"):format(props.UserId),
+                        ScaleType = Enum.ScaleType.Crop,
                         ZIndex = 2,
                     },
 
