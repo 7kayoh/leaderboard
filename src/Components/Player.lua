@@ -94,6 +94,15 @@ return function(props)
                         }
                     },
 
+                    New "ImageLabel" {
+                        Size = UDim2.fromOffset(42, 42),
+                        Position = UDim2.fromOffset(16, 0),
+                        BackgroundTransparency = 1,
+                        Image = ("rbxthumb://type=AvatarHeadShot&id=%s&w=48&h=48"):format(props.UserId),
+                        ImageTransparency = 0.5,
+                        ZIndex = 2,
+                    },
+
                     New "TextLabel" {
                         Font = Enum.Font.GothamSemibold,
                         Text = props.DisplayName,
@@ -108,7 +117,7 @@ return function(props)
                             return isHovering:get() and UDim2.fromScale(0, 0) or UDim2.fromOffset(16, 0)
                         end), TweenInfo.new(0.2, Enum.EasingStyle.Back)),
                         Size = UDim2.fromScale(0, 1),
-                        ZIndex = 2,
+                        ZIndex = 3,
                     },
 
                     New "Frame" {
@@ -121,7 +130,7 @@ return function(props)
                         Visible = Computed(function()
                             return not props.AtBottom:get()
                         end),
-                        ZIndex = 2,
+                        ZIndex = 3,
                     },
 
                     New "TextLabel" {
@@ -138,7 +147,7 @@ return function(props)
                             return isHovering:get() and UDim2.fromOffset(16, 0) or UDim2.fromOffset(32, 0)
                         end), TweenInfo.new(0.2, Enum.EasingStyle.Back)),
                         Size = UDim2.fromScale(0, 1),
-                        ZIndex = 2,
+                        ZIndex = 3,
                     },
 
                     New "ImageLabel" {
@@ -147,7 +156,7 @@ return function(props)
                         AnchorPoint = Vector2.new(1, 0.5),
                         Size = UDim2.fromOffset(16, 16),
                         Position = UDim2.new(1, -13, 0.5, 0),
-                        ZIndex = 2,
+                        ZIndex = 3,
                     }
                 },
 

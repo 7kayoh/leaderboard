@@ -44,6 +44,7 @@ return function(props)
             }),
             ComputedPairs(props.Players, function(index, player)
                 return PlayerComponent({
+                    UserId = player.UserId,
                     Name = player.Name,
                     DisplayName = player.DisplayName,
                     Icon = Computed(function()
