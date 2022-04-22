@@ -99,8 +99,18 @@ return function(props)
                         Position = UDim2.fromOffset(0, 0),
                         BackgroundTransparency = 1,
                         Image = ("rbxthumb://type=AvatarHeadShot&id=%s&w=60&h=60"):format(props.UserId),
+                        ImageTransparency = 0.6,
                         ScaleType = Enum.ScaleType.Crop,
                         ZIndex = 2,
+
+                        [Children] = {
+                            New "UIGradient" {
+                                Transparency = NumberSequence.new({
+                                    NumberSequenceKeypoint.new(0, 0),
+                                    NumberSequenceKeypoint.new(1, 1)
+                                }),
+                            }
+                        }
                     },
 
                     New "TextLabel" {
