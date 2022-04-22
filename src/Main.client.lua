@@ -19,6 +19,7 @@ local OnChange = Fusion.OnChange
 local size = Value(UDim2.fromOffset(200, 300))
 local isVisible = Value(true)
 local canvasSize = Value(Vector2.new(0, 0))
+local absoluteSize = Value(Vector2.new(0, 0))
 local allTeams = Value({})
 
 local UI = New "ScreenGui" {
@@ -36,6 +37,9 @@ local UI = New "ScreenGui" {
 			CanvasSize = Tween(Computed(function()
 				return UDim2.fromOffset(0, canvasSize:get().Y)
 			end), TweenInfo.new(0.3, Enum.EasingStyle.Quint)),
+			ScrollingEnabled = Computed(function()
+				return canvasSize:get().Y >= absoluteSize:get().Y
+			end),
 			Position = UDim2.new(1, -5, 0, 4),
 			Size = size,
 
@@ -55,7 +59,11 @@ local UI = New "ScreenGui" {
 						return nil
 					end
 				end),
-			}
+			},
+
+			[OnChange "AbsoluteSize"] = function(newValue)
+				absoluteSize:set(newValue)
+			end,
 		}
 	},
 }
