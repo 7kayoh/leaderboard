@@ -1,4 +1,5 @@
 local Players = game:GetService("Players")
+local Teams = game:GetService("Teams")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
@@ -24,9 +25,6 @@ return function(props)
         Size = Computed(function()
             return UDim2.new(1, 0, 0, absoluteContentSize:get().Y)
         end),
-        Visible = Computed(function()
-            return #props.Players > 0
-        end),
 
         [Children] = {
             New "UIListLayout" {
@@ -36,12 +34,20 @@ return function(props)
                     absoluteContentSize:set(newValue)
                 end
             },
-            TeamHeaderComponent({
-                Color = props.Color,
-                Name = props.Name,
-                Collapsed = props.Collapsed,
-                Count = #props.Players,
-            }),
+
+            Computed(function()
+                if #Teams:GetTeams() > 0 then
+                    return TeamHeaderComponent({
+                        Color = props.Color,
+                        Name = if props.Name == "@no_team" then "No Team" else props.Name,
+                        Collapsed = props.Collapsed,
+                        Count = #props.Players,
+                    })
+                else
+                    return nil
+                end
+            end),
+
             ComputedPairs(props.Players, function(index, player)
                 return PlayerComponent({
                     UserId = player.UserId,

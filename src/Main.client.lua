@@ -45,19 +45,69 @@ local UI = New "ScreenGui" {
 
 			[Children] = {
 				New "UIListLayout" {
-					Padding = UDim.new(0, 6),
+					Padding = UDim.new(0, 0),
 					SortOrder = Enum.SortOrder.LayoutOrder,
 					[OnChange "AbsoluteContentSize"] = function(newValue)
 						canvasSize:set(newValue)
 					end
 				},
 
+				New "ImageLabel" {
+					Image = "rbxassetid://8858987141",
+					ImageColor3 = Color3.fromHex("#000000"),
+					ImageTransparency = 0.5,
+					ScaleType = Enum.ScaleType.Slice,
+					SliceCenter = Rect.new(256, 256, 256, 256),
+					SliceScale = 0.01,
+					BackgroundTransparency = 1,
+					Size = UDim2.new(1, 0, 0, 24),
+					LayoutOrder = -1,
+
+					[Children] = {
+						New "TextLabel" {
+							BackgroundTransparency = 1,
+							Font = Enum.Font.GothamBold,
+							Text = "Players",
+							TextColor3 = Color3.fromHex("#FFFFFF"),
+							TextSize = 12,
+							TextTransparency = 0.2,
+							Position = UDim2.fromOffset(16, 0),
+							Size = UDim2.fromScale(0, 1),
+							TextXAlignment = Enum.TextXAlignment.Left,
+						},
+
+						New "Frame" {
+							BackgroundTransparency = 0.9,
+							BorderSizePixel = 0,
+							Position = UDim2.fromScale(0, 1),
+							AnchorPoint = Vector2.new(0, 1),
+							Size = UDim2.new(1, 0, 0, 1),
+						}
+					}
+				},
+
+				New "ImageLabel" {
+					Image = "rbxassetid://8858987793",
+					ImageColor3 = Color3.fromHex("#000000"),
+					ImageTransparency = 0.5,
+					ScaleType = Enum.ScaleType.Slice,
+					SliceCenter = Rect.new(256, 256, 256, 256),
+					SliceScale = 0.01,
+					BackgroundTransparency = 1,
+					Size = UDim2.new(1, 0, 0, 6),
+					LayoutOrder = 10000,
+
+					[Children] = {
+						New "Frame" {
+							BackgroundTransparency = 0.9,
+							BorderSizePixel = 0,
+							Size = UDim2.new(1, 0, 0, 1),
+						}
+					}
+				},
+
 				ComputedPairs(allTeams, function(_, team)
-					if #team.Players >= 1 then
-						return List(team)
-					else
-						return nil
-					end
+					return List(team)
 				end),
 			},
 
@@ -73,11 +123,11 @@ local function registerTeam(team: Team)
 	local function update()
 		local allTeamsTbl = allTeams:get()
 		local currentTeam = allTeamsTbl[team.Name]
-		if team:GetAttribute("Hidden") or #team:GetPlayers() == 0 then
+		if team:GetAttribute("Hidden") then
 			allTeamsTbl[team.Name] = nil
 			allTeams:set(allTeamsTbl, true)
 		end
-		local newData =  {
+		local newData = {
 			Players = team:GetPlayers(),
 			Name = team.Name,
 			Color = team.TeamColor.Color,
@@ -92,6 +142,41 @@ local function registerTeam(team: Team)
 	update()
 end
 
+local function updateNeutral()
+	local allTeamsTbl = allTeams:get()
+	local currentTeam = allTeamsTbl.Neutral
+	local neutralPlayers = {}
+	for _, player in ipairs(Players:GetPlayers()) do
+		if player.Team == nil then
+			table.insert(neutralPlayers, player)
+		end
+	end
+	local newData = {
+		Players = neutralPlayers,
+		Name = "@no_team",
+		Color = Color3.new(),
+		Collapsed = if currentTeam then currentTeam.Collapsed else Value(false)
+	}
+	allTeamsTbl.Neutral = newData
+	allTeams:set(allTeamsTbl, true)
+end
+
+local function registerPlayerEvent(player)
+	local pastTeam = if player.Team then player.Team.Name else "@no_team"
+	player:GetPropertyChangedSignal("Team"):Connect(function()
+		if not player.Team then
+			updateNeutral()
+		elseif pastTeam == "@no_team" and player.Team.Name ~= pastTeam then
+			updateNeutral()
+		end
+		pastTeam = if player.Team then player.Team.Name else "@no_team"
+	end)
+
+	if pastTeam == "@no_team" then
+		updateNeutral()
+	end
+end
+
 Teams.ChildAdded:Connect(registerTeam)
 Teams.ChildRemoved:Connect(function(team)
 	if not team:IsA("Team") then return end
@@ -99,8 +184,13 @@ Teams.ChildRemoved:Connect(function(team)
 	newTeamsData[team.Name] = nil
 	allTeams:set(newTeamsData, true)
 end)
+
+Players.PlayerAdded:Connect(registerPlayerEvent)
 for _, team in ipairs(Teams:GetTeams()) do
 	registerTeam(team)
+end
+for _, team in ipairs(Players:GetPlayers()) do
+	registerPlayerEvent(team)
 end
 
 ContextActionService:BindActionAtPriority("TogglePlayerList", function(_, state)

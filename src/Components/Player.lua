@@ -42,56 +42,10 @@ return function(props)
                 Size = UDim2.fromScale(1, 1),
 
                 [Children] = {
-                    New "ImageLabel" {
-                        Image = "rbxassetid://8858987141",
-                        ImageColor3 = Color3.fromHex("#000000"),
-                        ImageTransparency = Computed(function()
-                            return props.AtTop:get() and 1 or 0.5
-                        end),
-                        ScaleType = Enum.ScaleType.Slice,
-                        SliceCenter = Rect.new(256, 256, 256, 256),
-                        SliceScale = 0.01,
-                        BackgroundTransparency = 1,
-                        Size = UDim2.fromScale(1, 0.5),
-
-                        [Children] = {
-                            New "Frame" {
-                                BackgroundColor3 = Color3.fromHex("#000000"),
-                                BackgroundTransparency = 0.5,
-                                BorderSizePixel = 0,
-                                Size = UDim2.fromScale(1, 1),
-                                Visible = Computed(function()
-                                    return props.AtTop:get()
-                                end)
-                            },
-                        }
-                    },
-
-                    New "ImageLabel" {
-                        Image = "rbxassetid://8858987793",
-                        ImageColor3 = Color3.fromHex("#000000"),
-                        ImageTransparency = Computed(function()
-                            return props.AtBottom:get() and 0.5 or 1
-                        end),
-                        ScaleType = Enum.ScaleType.Slice,
-                        SliceCenter = Rect.new(256, 256, 256, 256),
-                        SliceScale = 0.01,
-                        AnchorPoint = Vector2.new(0, 1),
-                        BackgroundTransparency = 1,
-                        Position = UDim2.fromScale(0, 1),
-                        Size = UDim2.fromScale(1, 0.5),
-
-                        [Children] = {
-                            New "Frame" {
-                                BackgroundColor3 = Color3.fromHex("#000000"),
-                                BackgroundTransparency = 0.5,
-                                BorderSizePixel = 0,
-                                Size = UDim2.fromScale(1, 1),
-                                Visible = Computed(function()
-                                    return not props.AtBottom:get()
-                                end),
-                            },
-                        }
+                    New "Frame" {
+                        BackgroundTransparency = 0.5,
+                        BackgroundColor3 = Color3.fromHex("#000000"),
+                        Size = UDim2.fromScale(1, 1),
                     },
 
                     New "ImageLabel" {
@@ -165,7 +119,7 @@ return function(props)
                         Image = props.Icon,
                         AnchorPoint = Vector2.new(1, 0.5),
                         Size = UDim2.fromOffset(16, 16),
-                        Position = UDim2.new(1, -13, 0.5, 0),
+                        Position = UDim2.new(1, -16, 0.5, 0),
                         ZIndex = 3,
                     }
                 },

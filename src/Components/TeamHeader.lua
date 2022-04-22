@@ -19,42 +19,11 @@ return function(props)
                 Size = UDim2.fromScale(1, 1),
     
                 [Children] = {
-                    New "ImageLabel" {
-                        Image = "rbxassetid://8858987141",
-                        ImageColor3 = props.Color,
-                        ImageTransparency = 0.5,
-                        ScaleType = Enum.ScaleType.Slice,
-                        SliceCenter = Rect.new(256, 256, 256, 256),
-                        SliceScale = 0.01,
-                        BackgroundTransparency = 1,
-                        Size = UDim2.fromScale(1, 0.5),
-                    },
-    
-                    New "ImageLabel" {
-                        Image = "rbxassetid://8858987793",
-                        ImageColor3 = props.Color,
-                        ImageTransparency = Computed(function()
-                            return props.Collapsed:get() and 0.5 or 1
-                        end),
-                        ScaleType = Enum.ScaleType.Slice,
-                        SliceCenter = Rect.new(256, 256, 256, 256),
-                        SliceScale = 0.01,
-                        AnchorPoint = Vector2.new(0, 1),
-                        BackgroundTransparency = 1,
-                        Position = UDim2.fromScale(0, 1),
-                        Size = UDim2.fromScale(1, 0.5),
-    
-                        [Children] = {
-                            New "Frame" {
-                                BackgroundColor3 = props.Color,
-                                BackgroundTransparency = 0.5,
-                                BorderSizePixel = 0,
-                                Size = UDim2.fromScale(1, 1),
-                                Visible = Computed(function()
-                                    return not props.Collapsed:get()
-                                end)
-                            },
-                        }
+                    New "Frame" {
+                        BackgroundColor3 = props.Color,
+                        BackgroundTransparency = 0.3,
+                        BorderSizePixel = 0,
+                        Size = UDim2.fromScale(1, 1),
                     },
     
                     New "TextLabel" {
@@ -81,19 +50,6 @@ return function(props)
                         AnchorPoint = Vector2.new(1, 0),
                         Position = UDim2.new(1, -16, 0, 0),
                         Size = UDim2.fromScale(0, 1),
-                        ZIndex = 2,
-                    },
-    
-                    New "Frame" {
-                        AnchorPoint = Vector2.new(0, 1),
-                        BackgroundColor3 = Color3.fromHex("#FFFFFF"),
-                        BackgroundTransparency = 0.9,
-                        BorderSizePixel = 0,
-                        Position = UDim2.fromScale(0, 1),
-                        Size = UDim2.new(1, 0, 0, 2),
-                        Visible = Computed(function()
-                            return not props.Collapsed:get()
-                        end),
                         ZIndex = 2,
                     },
                 },
