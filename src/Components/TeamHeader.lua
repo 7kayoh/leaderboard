@@ -14,10 +14,8 @@ return function(props)
         Size = UDim2.new(1, 0, 0, 24),
     
         [Children] = {
-            New "TextButton" {
+            New "Frame" {
                 BackgroundTransparency = 1,
-                TextTransparency = 1,
-                Text = "",
                 Size = UDim2.fromScale(1, 1),
     
                 [Children] = {
@@ -100,8 +98,10 @@ return function(props)
                     },
                 },
 
-                [OnEvent "Activated"] = function()
-                    props.Collapsed:set(not props.Collapsed:get())
+                [OnEvent "InputEnded"] = function(input)
+                    if table.find({ Enum.UserInputType.MouseButton1, Enum.UserInputType.Touch }, input.UserInputType) then
+                        props.Collapsed:set(not props.Collapsed:get())
+                    end
                 end,
             },
         }

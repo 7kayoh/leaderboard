@@ -30,10 +30,8 @@ return function(props)
         ClipsDescendants = true,
 
         [Children] = {
-            New "TextButton" {
+            New "Frame" {
                 BackgroundTransparency = 1,
-                TextTransparency = 1,
-                Text = "",
                 Position = Tween(Computed(function()
                     if forceDisabled:get() or not props.Visible:get() then
                         return UDim2.fromScale(1, 0)
@@ -153,11 +151,11 @@ return function(props)
                     }
                 },
 
-                [OnEvent "MouseEnter"] = function()
+                [OnEvent "InputBegan"] = function()
                     isHovering:set(true)
                 end,
 
-                [OnEvent "MouseLeave"] = function()
+                [OnEvent "InputEnded"] = function()
                     isHovering:set(false)
                 end,
             },
